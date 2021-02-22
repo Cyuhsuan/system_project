@@ -28,7 +28,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import http from "../http-common";
-import router from '../router'
+import router from "../router";
+import { Store } from "vuex";
 
 @Component({
   components: {},
@@ -37,20 +38,34 @@ export default class Index extends Vue {
   data = {
     password: "",
     email: "",
+    account: "",
   };
 
   public submit() {
     const data = this.data;
-    console.log("http", http);
-    http.post("login", data).then((res) => {
-      console.log(res);
-      // 登入成功
-      if (res.data.success) {
-        const token = res.data.success.token;
-        localStorage.setItem("token", token);
-        router.push('home');
-      }
-    });
+    http
+      .post("login", data)
+      .then((res) => {
+        // 登入成功
+        if (res.data.success) {
+          const token = res.data.success.token;
+          localStorage.setItem("token", token);
+          http.post("details").then((res: any) => {
+            let user = {
+              email: res.data.success.email,
+              id: res.data.success.id,
+              name: res.data.success.name,
+            };
+            this.$store.commit("addUser",user);
+          });
+          router.push("home");
+        }
+      })
+      .catch((res) => {
+        // 登入失敗
+        this.data.password = "";
+        this.data.email = "";
+      });
   }
 }
 </script>

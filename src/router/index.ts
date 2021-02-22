@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
     else {
-      next({ path: '/404' }) //跳转到登录页
+      next({ path: '/' }) //跳转到登录页
     }
   } else {
     next()

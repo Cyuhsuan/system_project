@@ -9,26 +9,26 @@ export default axios.create({
     }
 });
 // 自訂義 post and get 待研究
-// export function get(url:any, params:any){    
-//     return new Promise((resolve, reject) =&gt;{        
-//         axios.get(url, {            
-//             params: params        
-//         }).then(res =&gt; {
-//             resolve(res.data);
-//         }).catch(err =&gt;{
-//             reject(err.data)        
-//         })    
-//     });
-// }
-// export function post(url: string, params: any=null) {
-//     return new Promise((resolve, reject) => {
-//         axios.post(url, params)
-//             .then(res => {
-//                 console.log('res',res)
-//                 resolve(res.data);
-//             })
-//             .catch(err => {
-//                 reject(err.data);
-//             })
-//     });
-// }
+export function get(url:any, params:any){    
+    return new Promise((resolve, reject) =>{        
+        axios.get(url, {            
+            params: params        
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data)        
+        })    
+    });
+}
+export function post(url: string, params: any=null) {
+    return new Promise((resolve, reject) => {
+        axios.post(url, params)
+            .then(res => {
+                console.log('res',res)
+                resolve(res.data);
+            })
+            .catch(err => {
+                reject(err.data);
+            })
+    });
+}

@@ -16,6 +16,11 @@
           <el-input v-model="data.email" placeholder="請輸入信箱"></el-input>
         </el-col>
       </el-row>
+      <!-- <el-row type="flex" justify="center">
+        <el-col :span="24" class="row">
+          <el-input v-model="data.account" placeholder="請輸入帳號"></el-input>
+        </el-col>
+      </el-row> -->
       <el-row type="flex" justify="center">
         <el-col :span="6">
           <el-button @click="submit">登入</el-button>
@@ -48,17 +53,12 @@ export default class Index extends Vue {
       .then((res) => {
         // 登入成功
         if (res.data.success) {
-          const token = res.data.success.token;
+          const token = res.data.data.token;
           localStorage.setItem("token", token);
-          http.post("details").then((res: any) => {
-            let user = {
-              email: res.data.success.email,
-              id: res.data.success.id,
-              name: res.data.success.name,
-            };
-            this.$store.commit("addUser",user);
+          this.$store.commit("addUser", res.data.data.user);
+          router.push("home").then(()=>{
+            window.location.reload();
           });
-          router.push("home");
         }
       })
       .catch((res) => {

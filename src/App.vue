@@ -1,38 +1,48 @@
 <template>
   <div id="app">
-
-    <el-container v-if="user">
-      <el-header>
-        <Header />
-      </el-header>
+    <div v-if="token">
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
+        <el-header>
+          <Header />
+        </el-header>
         <el-container>
+          <el-aside width="200px">
+            <Aside />
+          </el-aside>
           <el-main>
             <router-view />
           </el-main>
-          <el-footer>Footer</el-footer>
         </el-container>
       </el-container>
-    </el-container>
-    <router-view v-else/>
+    </div>
+    <div v-else>
+      <router-view />
+    </div>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Header from "./components/Header.vue";
+import Aside from "./components/Aside.vue";
+import http from "./http-common";
 @Component({
   components: {
     Header,
+    Aside,
   },
 })
 export default class App extends Vue {
-  get user() {
-    return this.$store.state.user;
+  get token() {
+    return localStorage.getItem("token");
   }
+  public user: any = null;
 
   mounted() {
-    console.log('userapp',this.user);
+    let user = localStorage.getItem("user");
+    if (user) {
+      user = JSON.parse(user);
+      this.$store.commit("addUser", user);
+    }
   }
 }
 </script>
@@ -67,6 +77,7 @@ export default class App extends Vue {
   color: #333;
   text-align: center;
   line-height: 60px;
+  padding: 0 !important;
 }
 
 .el-aside {
@@ -77,10 +88,8 @@ export default class App extends Vue {
 }
 
 .el-main {
-  background-color: #e9eef3;
+  // background-color: #e9eef3;
   color: #333;
-  text-align: center;
-  line-height: 160px;
 }
 
 body > .el-container {

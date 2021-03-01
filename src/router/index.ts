@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Index from '../views/Index.vue'
 import Home from '../views/Home.vue'
+import MessageBoard from '../views/MessageBoard.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,14 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: '/message-board',
+    name: 'MessageBoard',
+    component: MessageBoard,
+    meta: {
+      needLogin: true //需要登录
+    }
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -35,7 +44,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-// 全局路由守卫
+// // 全局路由守卫
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
   if (to.meta.needLogin) { // 判断该路由是否需要登录权限

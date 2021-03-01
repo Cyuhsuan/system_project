@@ -11,6 +11,10 @@
         <i class="el-icon-s-home"></i>
         <span slot="title">首頁</span>
       </el-menu-item>
+      <el-menu-item index="2" @click="goToPage('message-board')">
+        <i class="el-icon-tickets"></i>
+        <span slot="title">留言板</span>
+      </el-menu-item>
       <!-- <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>

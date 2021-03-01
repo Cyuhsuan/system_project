@@ -1,15 +1,19 @@
 <template>
   <div class="home">
     <div class="form-title">
-      <span> 重要通知 </span>
+      <span> 重要訊息 </span>
     </div>
     <el-row>
       <el-col>
-        <el-card class="box-card" body-style="text-align:left; position:relative;">
+        <el-card
+          class="box-card pointer"
+          body-style="text-align:left; position:relative;"
+        >
+        <div class="message-click" @click="toMessageBoard()"></div>
           In this HTML tutorial, you will find more than 200 examples. With our
           online "Try it Yourself" editor, you can edit and test each example
           yourself!
-          <div class="auther">admin</div>
+          <div class="auther">— admin <span> 2020/07/06</span></div>
         </el-card>
       </el-col>
     </el-row>
@@ -26,6 +30,8 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import http from "../http-common";
 import { Store } from "vuex";
 import Header from "../components/Header.vue";
+import { namespace } from "vuex-class";
+const Auth = namespace("Auth");
 
 @Component({
   components: {
@@ -33,36 +39,43 @@ import Header from "../components/Header.vue";
   },
 })
 export default class Home extends Vue {
-  public reverse = true;
-  public activities = [
-    {
-      content: "活动按期开始",
-      timestamp: "2018-04-15",
-    },
-    {
-      content: "通过审核",
-      timestamp: "2018-04-13",
-    },
-    {
-      content: "创建成功",
-      timestamp: "2018-04-11",
-    },
-  ];
+  @Auth.State("user")
+  private currentUser!: any;
+
+  // mounted() {
+  //   if (!this.currentUser) {
+  //     this.$router.push("/login");
+  //   }
+  // }
+
+  public toMessageBoard(){
+    console.log('ss');
+    this.$router.push("message-board");
+  }
 }
 </script>
 <style lang="scss" scope>
 .home {
-  width: 100vw;
-  min-height: 100vh;
-  padding: 20px;
-
   .box-card {
-    position:relative;
+    position: relative;
 
     .auther {
       position: absolute;
       bottom: 5px;
-      right: 5px;
+      right: 10px;
+
+      span {
+        font-size: 12px;
+        color: #999;
+      }
+    }
+
+    .message-click {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 }

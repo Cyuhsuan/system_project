@@ -11,19 +11,23 @@
           <el-input v-model="data.password" placeholder="請輸入密碼"></el-input>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center">
+      <!-- <el-row type="flex" justify="center">
         <el-col :span="24" class="row">
           <el-input v-model="data.email" placeholder="請輸入信箱"></el-input>
         </el-col>
-      </el-row>
-      <!-- <el-row type="flex" justify="center">
-        <el-col :span="24" class="row">
-          <el-input v-model="data.account" placeholder="請輸入帳號"></el-input>
-        </el-col>
       </el-row> -->
       <el-row type="flex" justify="center">
+        <el-col :span="24" class="row">
+          <el-input
+            v-model="data.account"
+            placeholder="請輸入帳號"
+            @change="handleLogin"
+          ></el-input>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
         <el-col :span="6">
-          <el-button @click="submit">登入</el-button>
+          <el-button @click="handleLogin">登入</el-button>
         </el-col>
       </el-row>
     </div>
@@ -32,9 +36,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import http from "../http-common";
+// import http from "../http-common";
 import router from "../router";
 import { Store } from "vuex";
+import { namespace } from "vuex-class";
+const Auth = namespace("Auth");
 
 @Component({
   components: {},
@@ -46,26 +52,36 @@ export default class Index extends Vue {
     account: "",
   };
 
-  public submit() {
-    const data = this.data;
-    http
-      .post("login", data)
-      .then((res) => {
-        // 登入成功
-        if (res.data.success) {
-          const token = res.data.data.token;
-          localStorage.setItem("token", token);
-          this.$store.commit("addUser", res.data.data.user);
-          router.push("home").then(()=>{
-            window.location.reload();
-          });
-        }
-      })
-      .catch((res) => {
-        // 登入失敗
-        this.data.password = "";
-        this.data.email = "";
-      });
+  private loading: boolean = false;
+  private message: string = "";
+
+  @Auth.Getter
+  private isLoggedIn!: boolean;
+
+  @Auth.Action
+  private login!: (data: any) => Promise<any>;
+
+  @Auth.State("user")
+  private currentUser!: any;
+
+  mounted() {
+    if (this.isLoggedIn) {
+      this.$router.push("home");
+    }
+  }
+
+  handleLogin() {
+    this.loading = true;
+
+    this.login(this.data).then(
+      (data) => {
+        this.$router.push("home");
+      },
+      (error) => {
+        this.loading = false;
+        this.message = error;
+      }
+    );
   }
 }
 </script>

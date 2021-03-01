@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Auth from "./modules/auth.module";
 
 Vue.use(Vuex)
 
@@ -8,32 +9,20 @@ export default new Vuex.Store({
     user: {}
   },
   mutations: {
-    addUser(state, data) {
-      state.user = data;
-      let obj = JSON.stringify(data);
-      localStorage.setItem("user", obj);
-    },
-    removeUser(state) {
-      state.user = {};
-    },
+    // addUser(state, data) {
+    //   state.user = data;
+    //   let obj = JSON.stringify(data);
+    //   localStorage.setItem("user", obj);
+    // },
+    // removeUser(state) {
+    //   state.user = {};
+    // },
   },
   actions: {
   },
   modules: {
+    Auth
   },
   getters: {
-    isLogin: (state) => {
-      if (state.user !== {}) {
-        return true;
-      } else {
-        return false;
-      }
-      // return state.user !== {};
-      // if (state.user) {
-      //   return true;
-      // } else {
-      //   return false;
-      // }
-    }
   }
 })

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="token">
+    <div v-if="isLoggedIn">
       <el-container>
         <el-header>
           <Header />
@@ -10,7 +10,7 @@
             <Aside />
           </el-aside>
           <el-main>
-            <router-view />
+            <router-view class="content" />
           </el-main>
         </el-container>
       </el-container>
@@ -24,7 +24,9 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import Header from "./components/Header.vue";
 import Aside from "./components/Aside.vue";
-import http from "./http-common";
+import { namespace } from "vuex-class";
+const Auth = namespace("Auth");
+
 @Component({
   components: {
     Header,
@@ -32,18 +34,8 @@ import http from "./http-common";
   },
 })
 export default class App extends Vue {
-  get token() {
-    return localStorage.getItem("token");
-  }
-  public user: any = null;
-
-  mounted() {
-    let user = localStorage.getItem("user");
-    if (user) {
-      user = JSON.parse(user);
-      this.$store.commit("addUser", user);
-    }
-  }
+  @Auth.Getter
+  private isLoggedIn!: boolean;
 }
 </script>
 <style lang="scss">
@@ -71,11 +63,15 @@ export default class App extends Vue {
     }
   }
 }
+.content {
+  width: 100%;
+  min-height: 100%;
+}
 .el-header,
 .el-footer {
   background-color: #b3c0d1;
   color: #333;
-  text-align: center;
+  // text-align: center;
   line-height: 60px;
   padding: 0 !important;
 }
@@ -83,13 +79,15 @@ export default class App extends Vue {
 .el-aside {
   background-color: #d3dce6;
   color: #333;
-  text-align: center;
+  // text-align: center;
   line-height: 200px;
 }
 
 .el-main {
   // background-color: #e9eef3;
+  min-height: 100vh;
   color: #333;
+  text-align: left;
 }
 
 body > .el-container {

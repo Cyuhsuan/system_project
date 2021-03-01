@@ -12,42 +12,55 @@
       <template slot="title">
         <div class="user-info"></div>
         <el-avatar :size="40"></el-avatar>
-        <span style="margin-left: 15px;">
-          {{ user.name }}
+        <span style="margin-left: 15px">
+          {{ user.data.user.name }}
         </span>
       </template>
-      <el-menu-item index="1-1">用戶編輯</el-menu-item>
+      <el-menu-item index="1-1" @click="openInfoDialog()"
+        >用戶編輯</el-menu-item
+      >
       <el-menu-item index="1-2">新增子用戶</el-menu-item>
       <el-menu-item index="1-3">选项3</el-menu-item>
     </el-submenu>
     <el-menu-item>
       <el-button @click="logout()" size="mini">登出</el-button>
     </el-menu-item>
+    <!-- <UserInfoDialog ref="infoDialog" /> -->
   </el-menu>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import http from "../http-common";
-import router from "../router";
+import UserInfoDialog from "@/components/user/UserInfoDialog.vue";
+import http from "@/http-common";
+import router from "@/router";
 import { Store } from "vuex";
+import { namespace } from "vuex-class";
+const Auth = namespace("Auth");
 
-@Component
+@Component({
+  components: {
+    UserInfoDialog,
+  },
+})
 export default class Header extends Vue {
-  public defaultIndex="1";
+  public defaultIndex = "1";
+  public loading: boolean = false;
 
-  get user() {
-    return this.$store.state.user;
-  }
+  @Auth.Action
+  private signOut!: () => void;
+
+  @Auth.State
+  private user!: any;
 
   public logout() {
-    http.post("logout").then((res) => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      this.$store.commit("removeUser");
-      router.push("/");
-      window.location.reload();
-    });
+    this.signOut();
+    router.push("/");
+  }
+
+  private openInfoDialog() {
+    // this.$refs.infoDialog.open();
+    // this.visible = true;
   }
 }
 </script>

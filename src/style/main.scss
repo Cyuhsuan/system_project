@@ -7,6 +7,12 @@
     cursor: pointer;
 }
 
+.no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .message-card {
     position: relative;
 
@@ -36,5 +42,12 @@
                 margin-right: 5px;
             }
         }
+    }
+
+    .date {
+        position: absolute;
+        bottom: 3px;
+        left: 20px;
+        font-size: 10px;
     }
 }

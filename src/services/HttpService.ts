@@ -20,7 +20,7 @@ class HttpService {
             headers: authHeader(),
             baseURL: API_URL,
             url: url,
-            data: data
+            params: data
         });
     }
 

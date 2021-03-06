@@ -14,7 +14,7 @@ class AuthService {
                 if (res.data.success) {
                     const token = res.data.data.token;
                     localStorage.setItem("token", token);
-                    localStorage.setItem('user', JSON.stringify(res.data));
+                    localStorage.setItem('user', JSON.stringify(res.data.data.user));
                 }
 
                 return res.data;

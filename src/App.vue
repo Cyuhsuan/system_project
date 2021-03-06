@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="isLoggedIn">
+    <template v-if="isLoggedIn" name="el-fade-in-linear">
       <el-container>
         <el-header>
           <Header />
@@ -14,7 +14,7 @@
           </el-main>
         </el-container>
       </el-container>
-    </div>
+    </template>
     <div v-else>
       <router-view />
     </div>

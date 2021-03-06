@@ -13,7 +13,7 @@
         <div class="user-info"></div>
         <el-avatar :size="40"></el-avatar>
         <span style="margin-left: 15px">
-          {{ user.data.user.name }}
+          {{ user.name }}
         </span>
       </template>
       <el-menu-item index="1-1" @click="openInfoDialog()"
@@ -25,7 +25,7 @@
     <el-menu-item>
       <el-button @click="logout()" size="mini">登出</el-button>
     </el-menu-item>
-    <!-- <UserInfoDialog ref="infoDialog" /> -->
+    <UserInfoDialog ref="infoDialog" />
   </el-menu>
 </template>
 
@@ -47,6 +47,10 @@ export default class Header extends Vue {
   public defaultIndex = "1";
   public loading: boolean = false;
 
+  public $refs!: {
+    infoDialog: UserInfoDialog;
+  };
+
   @Auth.Action
   private signOut!: () => void;
 
@@ -58,8 +62,8 @@ export default class Header extends Vue {
     router.push("/");
   }
 
-  private openInfoDialog() {
-    // this.$refs.infoDialog.open();
+  public openInfoDialog() {
+    this.$refs.infoDialog.open();
     // this.visible = true;
   }
 }

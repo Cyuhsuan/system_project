@@ -20,7 +20,7 @@ const Auth = namespace("Auth");
 @Component({
   components: {},
 })
-export default class UserInfoDialog extends Vue {
+export default class demoDialog extends Vue {
   public visible: boolean = false;
 
   public open (){

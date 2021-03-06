@@ -1,10 +1,6 @@
 <template>
-  <el-dialog
-    title="用戶編輯"
-    :visible.sync="visible"
-    width="30%"
-  >
-    <span>这是一段信息</span>
+  <el-dialog title="詳細留言" :visible.sync="visible" width="30%">
+    <div></div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取消</el-button>
       <el-button type="primary" @click="dialogVisible = false">確定</el-button>
@@ -20,10 +16,10 @@ const Auth = namespace("Auth");
 @Component({
   components: {},
 })
-export default class UserInfoDialog extends Vue {
+export default class MessageDialog extends Vue {
   public visible: boolean = false;
 
-  public open (){
+  public open() {
     this.visible = true;
   }
 }

@@ -2,16 +2,20 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import AuthService from '@/services/AuthService';
 
 const storedUser = localStorage.getItem('user');
+const storedToken = localStorage.getItem('token');
 
 @Module({ namespaced: true })
 class User extends VuexModule {
   public status = storedUser ? { loggedIn: true } : { loggedIn: false };
   public user = storedUser ? JSON.parse(storedUser) : null;
+  public token = storedToken ? storedToken : null;
 
   @Mutation
-  public loginSuccess(user: any): void {
+  public loginSuccess(data: any): void {
+    console.log('login', data)
     this.status.loggedIn = true;
-    this.user = user;
+    this.user = data.user;
+    this.token = data.token;
   }
 
   @Mutation
@@ -24,6 +28,7 @@ class User extends VuexModule {
   public logout(): void {
     this.status.loggedIn = false;
     this.user = null;
+    this.token = null;
   }
 
   @Mutation
@@ -40,8 +45,8 @@ class User extends VuexModule {
   login(data: any): Promise<any> {
     return AuthService.login(data.account, data.password).then(
       user => {
-        this.context.commit('loginSuccess', user);
-        return Promise.resolve(user);
+        this.context.commit('loginSuccess', user.data);
+        return Promise.resolve(user.data.user);
       },
       error => {
         this.context.commit('loginFailure');

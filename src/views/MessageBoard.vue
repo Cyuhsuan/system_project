@@ -32,6 +32,7 @@
           <div class="message-click" @click="toDetail(item.id)"></div>
           {{ item.content }}
           <div class="auther text-gray">- {{ item.user.name }}</div>
+          <div class="reply text-gray">回應: {{ item.replyCount }}</div>
           <div class="edit" v-if="item.user_id === user.id">
             <div @click="edit(item)">編輯</div>
             <div @click="remove(item)">刪除</div>
@@ -97,6 +98,10 @@ export default class MessageBoard extends Vue {
           item.isToday = isToday;
           if (isToday) {
             item.color = "rgb(245, 162, 8)";
+          }
+
+          if (item.isEdit) {
+            item.date = item.date + " (已編輯)";
           }
           return item;
         });

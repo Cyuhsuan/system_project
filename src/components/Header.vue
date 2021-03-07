@@ -19,19 +19,22 @@
       <el-menu-item index="1-1" @click="openInfoDialog()"
         >用戶編輯</el-menu-item
       >
-      <el-menu-item index="1-2">新增子用戶</el-menu-item>
-      <el-menu-item index="1-3">选项3</el-menu-item>
+      <el-menu-item index="1-2" @click="openPasswordDialog()"
+        >密碼編輯</el-menu-item
+      >
     </el-submenu>
     <el-menu-item>
       <el-button @click="logout()" size="mini">登出</el-button>
     </el-menu-item>
     <UserInfoDialog ref="infoDialog" />
+    <UserPasswordDialog ref="passwordDialog" />
   </el-menu>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import UserInfoDialog from "@/components/user/UserInfoDialog.vue";
+import UserPasswordDialog from "@/components/user/UserPasswordDialog.vue";
 import http from "@/http-common";
 import router from "@/router";
 import { Store } from "vuex";
@@ -41,6 +44,7 @@ const Auth = namespace("Auth");
 @Component({
   components: {
     UserInfoDialog,
+    UserPasswordDialog,
   },
 })
 export default class Header extends Vue {
@@ -49,6 +53,7 @@ export default class Header extends Vue {
 
   public $refs!: {
     infoDialog: UserInfoDialog;
+    passwordDialog: UserPasswordDialog;
   };
 
   @Auth.Action
@@ -64,6 +69,10 @@ export default class Header extends Vue {
 
   public openInfoDialog() {
     this.$refs.infoDialog.open();
+    // this.visible = true;
+  }
+  public openPasswordDialog() {
+    this.$refs.passwordDialog.open();
     // this.visible = true;
   }
 }

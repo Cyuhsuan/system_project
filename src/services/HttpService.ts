@@ -1,7 +1,7 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://laravel.test/api/';
+const API_URL = 'https://yu-test-project.herokuapp.com/api/';
 
 class HttpService {
     post(url: string, data: any) {

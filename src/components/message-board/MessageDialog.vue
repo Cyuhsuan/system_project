@@ -139,7 +139,7 @@ export default class MessageDialog extends Vue {
 </script>
 <style lang="scss" scope>
 .message-dialog {
-  position: relative;
+  // position: relative;
   .content {
     margin-bottom: 20px;
   }

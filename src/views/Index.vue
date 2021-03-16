@@ -6,11 +6,6 @@
           <h1>管理系統</h1>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center">
-        <el-col :span="24" class="row">
-          <el-input v-model="data.password" placeholder="請輸入密碼"></el-input>
-        </el-col>
-      </el-row>
       <!-- <el-row type="flex" justify="center">
         <el-col :span="24" class="row">
           <el-input v-model="data.email" placeholder="請輸入信箱"></el-input>
@@ -26,8 +21,16 @@
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="6">
+        <el-col :span="24" class="row">
+          <el-input v-model="data.password" placeholder="請輸入密碼"></el-input>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center" :gutter="10">
+        <el-col :span="12">
           <el-button @click="handleLogin">登入</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button @click="goRigster">註冊</el-button>
         </el-col>
       </el-row>
     </div>
@@ -82,6 +85,10 @@ export default class Index extends Vue {
         this.message = error;
       }
     );
+  }
+
+  public goRigster() {
+    this.$router.push("register");
   }
 }
 </script>

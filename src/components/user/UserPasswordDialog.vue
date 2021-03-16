@@ -2,13 +2,13 @@
   <el-dialog title="密碼編輯" :visible.sync="visible" width="30%">
     <el-form ref="form" v-model="form" :loading="loading">
       <el-form-item label="舊密碼">
-        <el-input v-model="form.oldPassword"></el-input>
+        <el-input v-model="form.old_password"></el-input>
       </el-form-item>
       <el-form-item label="新密碼">
-        <el-input v-model="form.newPassword"></el-input>
+        <el-input v-model="form.new_password"></el-input>
       </el-form-item>
       <el-form-item label="密碼驗證">
-        <el-input v-model="form.confirmPassword"></el-input>
+        <el-input v-model="form.confirm_password"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -27,15 +27,15 @@ import { namespace } from "vuex-class";
 const Auth = namespace("Auth");
 
 interface Form {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+  old_password: string;
+  new_password: string;
+  confirm_password: string;
 }
 
 const defaultFrom: Form = {
-  oldPassword: "",
-  newPassword: "",
-  confirmPassword: "",
+  old_password: "",
+  new_password: "",
+  confirm_password: "",
 };
 
 @Component({
@@ -64,16 +64,17 @@ export default class UserPasswordDialog extends Vue {
   }
 
   public submit() {
-    // this.loading = true;
-    // const data = this.form;
-    // http
-    //   .post("user/password-edit", data)
-    //   .then((res) => {
-    //     this.signOut();
-    //   })
-    //   .finally(() => {
-    //     this.loading = false;
-    //   });
+    this.loading = true;
+    const data = this.form;
+    http
+      .post("user/password-edit", data)
+      .then((res) => {
+        this.loading = false;
+      })
+      .finally(() => {
+        this.signOut();
+        router.push("/");
+      });
   }
 }
 </script>

@@ -42,7 +42,7 @@
         :disabled="loading"
       >
       </el-input>
-      <el-button size="mini" @click="dialogVisible = false">取消</el-button>
+      <el-button size="mini" @click="close()">取消</el-button>
       <el-button size="mini" type="primary" @click="submit()">確定</el-button>
     </span>
   </el-dialog>
@@ -134,6 +134,11 @@ export default class MessageDialog extends Vue {
       this.reply = "";
       this.reload(this.response.id);
     });
+  }
+
+  public close(){
+    this.visible = false;
+    this.$emit('close');
   }
 }
 </script>

@@ -40,7 +40,7 @@
         </el-card>
       </el-timeline-item>
     </el-timeline>
-    <MessageDialog ref="dialog" @submit="reload()" />
+    <MessageDialog ref="dialog" @submit="reload()" @close="reload()" />
     <MessageEditDialog ref="editDialog" />
   </div>
 </template>

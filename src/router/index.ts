@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Index from '../views/Index.vue'
 import Home from '../views/Home.vue'
 import MessageBoard from '../views/MessageBoard.vue'
+import Register from '../views/Register.vue'
 
 Vue.use(VueRouter)
 
@@ -13,12 +14,17 @@ const routes: Array<RouteConfig> = [
     component: Index
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
     path: '/home',
     name: 'Home',
     component: Home,
     meta: {
       title: "首頁",
-      needLogin: true //需要登录
+      needLogin: true //需要登入
     }
   },
   {
@@ -26,7 +32,7 @@ const routes: Array<RouteConfig> = [
     name: 'MessageBoard',
     component: MessageBoard,
     meta: {
-      needLogin: true //需要登录
+      needLogin: true //需要登入
     }
   },
   {
@@ -44,15 +50,15 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-// // 全局路由守卫
+// 路徑守衛
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
-  if (to.meta.needLogin) { // 判断该路由是否需要登录权限
-    if (token) { // 判断是否已经登录
+  if (to.meta.needLogin) { // 判斷是否需要登入驗證
+    if (token) { // 判斷是否已登入
       next()
     }
     else {
-      next({ path: '/' }) //跳转到登录页
+      next({ path: '/' }) //跳轉登入頁面
     }
   } else {
     next()

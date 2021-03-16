@@ -41,6 +41,19 @@ class User extends VuexModule {
     this.status.loggedIn = false;
   }
 
+  @Mutation
+  public userUpdate(data: any): void {
+    this.user.name = data.name;
+    this.user.email = data.email;
+    localStorage.setItem('user', JSON.stringify(this.user));
+  }
+
+  @Mutation
+  public photoUpdate(data: any): void {
+    this.user.photo_address = data;
+    localStorage.setItem('user', JSON.stringify(this.user));
+  }
+
   @Action({ rawError: true })
   login(data: any): Promise<any> {
     return AuthService.login(data.account, data.password).then(
@@ -67,7 +80,7 @@ class User extends VuexModule {
 
   @Action({ rawError: true })
   register(data: any): Promise<any> {
-    return AuthService.register(data.username, data.email, data.password).then(
+    return AuthService.register(data.account, data.email, data.password, data.c_password, data.name).then(
       response => {
         this.context.commit('registerSuccess');
         return Promise.resolve(response.data);
@@ -81,6 +94,16 @@ class User extends VuexModule {
         return Promise.reject(message);
       }
     );
+  }
+
+  @Action
+  userEditUpdate(data: any) {
+    this.context.commit('userUpdate', data)
+  }
+
+  @Action
+  userPhotoUpdate(data: any) {
+    this.context.commit('photoUpdate', data)
   }
 
   get isLoggedIn(): boolean {

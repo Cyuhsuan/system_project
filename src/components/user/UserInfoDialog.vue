@@ -1,5 +1,10 @@
 <template>
-  <el-dialog title="用戶編輯" :visible.sync="visible" width="30%">
+  <el-dialog
+    title="用戶編輯"
+    :visible.sync="visible"
+    width="30%"
+    class="user-info-dialog"
+  >
     <el-form ref="form" v-model="form" :loading="loading">
       <el-form-item label="暱稱">
         <el-input v-model="form.name"></el-input>
@@ -39,7 +44,7 @@ export default class UserInfoDialog extends Vue {
   private user!: any;
 
   @Auth.Action
-  private signOut!: () => void;
+  private userEditUpdate!: (data:any) => void;
 
   public form: User = {
     name: "",
@@ -59,15 +64,11 @@ export default class UserInfoDialog extends Vue {
   public submit() {
     this.loading = true;
     const data = this.form;
-    http
-      .post("user/edit", data)
-      .then((res) => {
-        this.loading = false;
-      })
-      .finally(() => {
-        this.signOut();
-        router.push("/");
-      });
+
+    http.post("user/edit", data).then((res) => {
+      this.loading = false;
+      this.userEditUpdate(this.form);
+    });
   }
 }
 </script>

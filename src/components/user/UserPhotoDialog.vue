@@ -4,30 +4,32 @@
     :visible.sync="visible"
     width="30%"
     class="user-photo-dialog"
+    :before-close="beforeClose"
   >
     <el-form ref="form" v-model="form" :loading="loading">
       <el-upload
         :action="domain"
         :multiple="false"
+        :show-file-list="false"
         :headers="header"
         class="avatar-uploader"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
         list-type="picture-card"
       >
-        <img v-if="dialogImageUrl" :src="dialogImageUrl" class="avatar" />
-        <i class="el-icon-plus avatar-uploader-icon"></i>
+        <img v-if="imageUrl" :src="dialogImageUrl" class="avatar" />
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
       <!-- <el-dialog :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog> -->
     </el-form>
-    <!-- <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="dialog-footer">
       <el-button @click="close()" :loading="loading">取消</el-button>
       <el-button type="primary" @click="submit()" :loading="loading"
         >確定</el-button
       >
-    </span> -->
+    </span>
   </el-dialog>
 </template>
 <script lang="ts">
@@ -85,26 +87,39 @@ export default class UserPhotoDialog extends Vue {
   }
 
   public close() {
+    if (this.imageUrl) {
+      this.delete();
+    }
     this.visible = false;
   }
 
   public submit() {
     this.loading = true;
-    let formData = new FormData();
-    formData.append("file", this.file);
     const data = {
       ...this.form,
-      file: this.file,
+      fileUrl: this.imageUrl,
     };
 
-    http.post("user/photo-upload", formData).then((res) => {
-      this.loading = false;
-    });
+    http
+      .post("user/edit-photo-upload", data)
+      .then((res: any) => {
+        if (res.data.status === 1) {
+          console.log(res);
+          this.userPhotoUpdate(res.data.filepath);
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+        this.close();
+      });
   }
 
   public handleAvatarSuccess(res: any, file: any) {
-    this.imageUrl = URL.createObjectURL(file.raw);
-    this.userPhotoUpdate(res.filepath);
+    if (res.status === 1) {
+      this.imageUrl = res.filepath;
+      this.dialogImageUrl = process.env.VUE_APP_URL + "uploads/" + res.filepath;
+    }
+    // this.userPhotoUpdate(res.filepath);
   }
 
   public beforeAvatarUpload(file: any) {
@@ -121,13 +136,28 @@ export default class UserPhotoDialog extends Vue {
     return isJPG && isLt2M;
   }
 
-  public handleRemove(file: any, fileList: any) {
-    console.log(file, fileList);
+  public delete() {
+    this.loading = true;
+    const data = {
+      ...this.form,
+      fileUrl: this.imageUrl,
+    };
+
+    http
+      .post("user/delete-photo-upload", data)
+      .then((res: any) => {})
+      .finally(() => {
+        this.loading = false;
+      });
   }
 
   public handlePictureCardPreview(file: any) {
     this.dialogImageUrl = file.url;
     this.dialogVisible = true;
+  }
+
+  public beforeClose() {
+    this.close();
   }
 }
 </script>

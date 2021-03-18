@@ -68,6 +68,8 @@ export default class UserInfoDialog extends Vue {
     http.post("user/edit", data).then((res) => {
       this.loading = false;
       this.userEditUpdate(this.form);
+    }).finally(()=>{
+      this.visible = false;
     });
   }
 }

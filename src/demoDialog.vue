@@ -13,7 +13,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import http from "@/http-common";
+import http from "@/services/HttpService";
 import { namespace } from "vuex-class";
 const Auth = namespace("Auth");
 

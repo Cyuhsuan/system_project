@@ -4,6 +4,7 @@ import Index from '../views/Index.vue'
 import Home from '../views/Home.vue'
 import MessageBoard from '../views/MessageBoard.vue'
 import Register from '../views/Register.vue'
+import ProductionUpdate from '../views/ProductionUpdate.vue'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,14 @@ const routes: Array<RouteConfig> = [
     meta: {
       needLogin: true //需要登入
     }
+  },
+  {
+    path: '/production-update',
+    name: 'ProductionUpdate',
+    component: ProductionUpdate,
+    meta: {
+      needLogin: true //需要登入
+    },
   },
   {
     path: '/about',

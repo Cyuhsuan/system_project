@@ -15,6 +15,16 @@
         <i class="el-icon-tickets"></i>
         <span slot="title">留言板</span>
       </el-menu-item>
+      <el-submenu index="production">
+        <template slot="title">
+          <i class="el-icon-sell"></i>
+          <span>商品管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="production-update" @click="goToPage('production-update')">商品上架</el-menu-item>
+          <!-- <el-menu-item index="1-2">选项2</el-menu-item> -->
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
   </div>
 </template>
@@ -40,7 +50,8 @@ export default class Aside extends Vue {
 </script>
 <style lang="scss" scope>
 .aside {
-  .el-menu-item {
+  .el-menu-item,
+  .el-submenu__title {
     text-align: left;
   }
 }

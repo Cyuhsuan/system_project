@@ -8,6 +8,7 @@
     with="100%"
     class="header"
   >
+    <span class="title">後台測試系統</span>
     <el-submenu index="1">
       <template slot="title">
         <div class="user-info"></div>
@@ -84,6 +85,7 @@ export default class Header extends Vue {
       url =
         "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png";
     }
+    console.log(url);
     return url;
   }
 
@@ -103,6 +105,7 @@ export default class Header extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .header {
+  position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -112,6 +115,13 @@ export default class Header extends Vue {
     width: 100%;
     height: 100%;
     background-size: contain;
+  }
+
+  .title {
+    position: absolute;
+    left: 15px;
+    color: #fff;
+    font-size: 25px;
   }
 }
 

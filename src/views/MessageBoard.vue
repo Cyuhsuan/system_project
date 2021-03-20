@@ -20,7 +20,7 @@
     </el-row>
     <hr />
     <h1>留言紀錄</h1>
-    <el-timeline :reverse="true" :loading="loading">
+    <el-timeline :reverse="false" :loading="loading">
       <el-timeline-item
         v-for="(item, index) in response"
         :key="index"

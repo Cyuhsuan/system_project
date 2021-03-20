@@ -30,12 +30,22 @@
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="商品品描述">
+      <el-form-item label="商品描述">
         <el-input
           type="textarea"
           :rows="2"
           placeholder="請輸入內容"
           v-model="form.description"
+          style="margin-bottom: 15px"
+          :disabled="loading"
+        >
+        </el-input>
+      </el-form-item>
+      <el-form-item label="商品價格">
+        <el-input
+          type="number"
+          placeholder="請輸入金額"
+          v-model="form.price"
           style="margin-bottom: 15px"
           :disabled="loading"
         >
@@ -64,6 +74,7 @@ interface Form {
   fileUrl: string;
   title: string;
   id: number;
+  price: number;
 }
 
 const defaultData = {
@@ -71,6 +82,7 @@ const defaultData = {
   fileUrl: "",
   title: "",
   id: 0,
+  price: 0,
 };
 
 @Component({
@@ -97,7 +109,7 @@ export default class ProductionEditDialog extends Vue {
     return process.env.VUE_APP_API_URL + "production/photo-upload";
   }
 
-  public open(item: any) {
+  public open(item: any = null) {
     console.log(item);
     this.visible = true;
     const token = localStorage.getItem("token");
@@ -108,6 +120,7 @@ export default class ProductionEditDialog extends Vue {
     this.dialogImageUrl = item.fileUrl;
     this.imageUrl = item.photo_address;
     this.form.id = item.id;
+    this.form.price = item.price;
     console.log(this.form);
   }
 

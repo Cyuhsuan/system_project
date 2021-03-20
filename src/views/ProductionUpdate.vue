@@ -19,6 +19,7 @@
           <div style="padding: 14px">
             <h2>{{ item.title }}</h2>
             <div class="content ellipsis">{{ item.description }}</div>
+            <div class="content ellipsis">${{ item.price }}</div>
           </div>
         </el-card>
       </el-col>

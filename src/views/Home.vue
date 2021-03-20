@@ -10,19 +10,17 @@
           body-style="text-align:left; position:relative;"
         >
           <div class="message-click" @click="toMessageBoard()"></div>
-          In this HTML tutorial, you will find more than 200 examples. With our
-          online "Try it Yourself" editor, you can edit and test each example
-          yourself!
-          <div class="auther">— admin <span> 2020/07/06</span></div>
+            歡迎使用此系統,一切功能正在開發中,可測試使用者相關功能跟留言系統
+          <div class="auther">— 開發者 <span> 2020/03/20</span></div>
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="10">
+    <!-- <el-row :gutter="10">
       <el-col :span="12">ss</el-col>
       <el-col :span="12">dd</el-col>
       <el-col :span="12">aa</el-col>
       <el-col :span="12">qq</el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 <script lang="ts">

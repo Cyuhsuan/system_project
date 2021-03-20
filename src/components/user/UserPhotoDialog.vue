@@ -6,7 +6,7 @@
     class="user-photo-dialog"
     :before-close="beforeClose"
   >
-    <el-form ref="form" v-model="form" :loading="loading">
+    <el-form ref="form" v-model="form" :loading="loading" class="photo-upload">
       <el-upload
         :action="domain"
         :multiple="false"
@@ -91,6 +91,8 @@ export default class UserPhotoDialog extends Vue {
       this.delete();
     }
     this.visible = false;
+    this.dialogImageUrl = "";
+    this.imageUrl = "";
   }
 
   public submit() {
@@ -105,6 +107,7 @@ export default class UserPhotoDialog extends Vue {
       .then((res: any) => {
         if (res.data.status === 1) {
           console.log(res);
+          this.imageUrl = "";
           this.userPhotoUpdate(res.data.filepath);
         }
       })
@@ -163,28 +166,5 @@ export default class UserPhotoDialog extends Vue {
 </script>
 <style lang="scss" scope>
 .user-photo-dialog {
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409eff;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 100%;
-    height: 100%;
-    line-height: 100%;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
 }
 </style>

@@ -101,6 +101,10 @@ export default class MessageBoard extends Vue {
     window.addEventListener("scroll", this.scrollHander);
     this.reload();
   }
+  //銷毀對scroll的監聽
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.scrollHander);
+  }
 
   public scrollHander() {
     let scrollTop =

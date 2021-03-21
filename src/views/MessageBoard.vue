@@ -115,21 +115,27 @@ export default class MessageBoard extends Vue {
     // 到底的條件
     if (scrollTop + windowHeight + 1 >= scrollHeight) {
       if (!this.loading) {
-        this.reload();
+        this.reload("cur");
       }
     }
   }
 
-  public reload() {
+  //type=要reload的類型 cur=接著取得資料,new=重新取得資料
+  public reload(type: string = "new") {
     this.loading = true;
     const curResponse = JSON.parse(JSON.stringify(this.response));
     let data = {
       id: 0,
     };
     // 如果 當前 response 有值,就取得最後一個元素的id
-    if (curResponse.length > 0) {
-      const last = curResponse[curResponse.length - 1];
-      data.id = last.id;
+    if (type === "cur") {
+      if (curResponse.length > 0) {
+        const last = curResponse[curResponse.length - 1];
+        data.id = last.id;
+      }
+    }
+    if (type === "new") {
+      this.response = [];
     }
     console.log(data);
     http

@@ -40,6 +40,16 @@
         </el-card>
       </el-timeline-item>
     </el-timeline>
+    <template>
+      <transition name="el-fade-in-linear">
+        <div v-show="loading" class="on-loading">加載中...</div>
+      </transition>
+      <transition name="el-fade-in-linear">
+        <div v-show="noData && !loading" class="on-loading">
+          目前沒有更多資料
+        </div>
+      </transition>
+    </template>
     <MessageDialog ref="dialog" @submit="reload()" @close="reload()" />
     <MessageEditDialog ref="editDialog" />
   </div>
@@ -66,6 +76,8 @@ interface MessageItem {
   },
 })
 export default class MessageBoard extends Vue {
+  public loading: boolean = false;
+  public noData: boolean = false;
   public data = {
     message: "",
   };
@@ -80,20 +92,55 @@ export default class MessageBoard extends Vue {
   @Auth.State
   private token!: string;
 
-  public response = [];
-  public loading: boolean = false;
+  public response: any = [];
+
+  public i: number = 0;
 
   mounted() {
+    this.response = [];
+    window.addEventListener("scroll", this.scrollHander);
     this.reload();
+  }
+
+  public scrollHander() {
+    let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    // windowHeight 是可是範圍的高度
+    let windowHeight =
+      document.documentElement.clientHeight || document.body.clientHeight;
+    // scrollHeight 是滾動條的總高度
+    let scrollHeight =
+      document.documentElement.scrollHeight || document.body.scrollHeight;
+
+    // 到底的條件
+    if (scrollTop + windowHeight + 1 >= scrollHeight) {
+      if (!this.loading) {
+        this.reload();
+      }
+    }
   }
 
   public reload() {
     this.loading = true;
+    const curResponse = JSON.parse(JSON.stringify(this.response));
+    let data = {
+      id: 0,
+    };
+    // 如果 當前 response 有值,就取得最後一個元素的id
+    if (curResponse.length > 0) {
+      const last = curResponse[curResponse.length - 1];
+      data.id = last.id;
+    }
+    console.log(data);
     http
-      .get("message/index", {})
+      .get("message/index", data)
       .then((res: any) => {
-        this.response = res.data;
-        this.response.forEach((item: any) => {
+        if (res.data.length === 0) {
+          this.noData = true;
+        } else {
+          this.noData = false;
+        }
+        res.data.map((item: any) => {
           const isToday = this.isToday(item.date);
           item.isToday = isToday;
           if (isToday) {
@@ -103,7 +150,7 @@ export default class MessageBoard extends Vue {
           if (item.isEdit) {
             item.date = item.date + " (已編輯)";
           }
-          return item;
+          this.response.push(item);
         });
       })
       .finally(() => {
@@ -150,6 +197,12 @@ export default class MessageBoard extends Vue {
 }
 </script>
 <style lang="scss" scope>
+.on-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // height: 30px;
+}
 h1 {
   margin-top: 0;
 }
